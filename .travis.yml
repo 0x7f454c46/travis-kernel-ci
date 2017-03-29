@@ -1,0 +1,15 @@
+language: c
+sudo: required
+dist: trusty
+cache: ccache
+
+script:
+  - sudo ./travis-kexec.sh
+
+env:
+  global: TEST_CMD="./project-test.sh"
+  matrix:
+    - NAME=master     KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
+    - NAME=linux-next KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
+    - NAME=akpm       KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git -b akpm"
+    - NAME=tip        KGIT="git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git -b auto-latest"
