@@ -1,0 +1,24 @@
+From 6a3dc36d4008d8583285964bf203bfdf69717fd0 Mon Sep 17 00:00:00 2001
+From: Andrei Vagin <avagin@virtuozzo.com>
+Date: Thu, 30 Mar 2017 18:02:39 +0300
+Subject: [PATCH] sk-unix: workaround to ext stream
+
+---
+ criu/sk-unix.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/criu/sk-unix.c b/criu/sk-unix.c
+index 4ab42f8df782..676c57f218e2 100644
+--- a/criu/sk-unix.c
++++ b/criu/sk-unix.c
+@@ -708,7 +708,6 @@ static int dump_external_sockets(struct unix_sk_desc *peer)
+ 				if (peer->type != SOCK_DGRAM) {
+ 					show_one_unix("Ext stream not supported", peer);
+ 					pr_err("Can't dump half of stream unix connection.\n");
+-					return -1;
+ 				}
+ 
+ 				if (!peer->name) {
+-- 
+2.12.0
+

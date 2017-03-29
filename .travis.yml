@@ -4,10 +4,20 @@ dist: trusty
 cache: ccache
 
 script:
-  - sudo ./travis-kexec.sh
+  - sudo ./kexec.sh
+after_failure:
+  - sudo ./dump-logs.sh
 
 env:
-  global: TEST_CMD="./project-test.sh"
+  global:
+    - TEST_CMD=./project-test.sh
+    - KPATH=linux
+    - CRIU_DIR=criu
+    - KCONFIG=config/next
+    - LOGS=/log
+    - DEBUG=y
+    - DEBUG_NO_KEXEC=n
+    - CMDLINE="root=/dev/sda1 cgroup_enable=memory swapaccount=1 apparmor=0 console=ttyS0 console=ttyS0 debug raid=noautodetect slub_debug=FZP"
   matrix:
     - NAME=master     KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
     - NAME=linux-next KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
