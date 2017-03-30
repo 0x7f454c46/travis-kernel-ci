@@ -8,10 +8,6 @@ function criu_dump()
 		-t ${PROCESS_TREE} -j --tcp-established --ext-unix-sk	\
 		-vvvv -l --ghost-limit 10485760
 
-	if [[ ${DEBUG} == "y" ]] ; then
-		ls -l "${IMAGES_PATH}"
-	fi
-
 	${CRIT_BIN} show ${IMAGES_PATH}/tty-info.img |			\
 		sed 's/"index": \([0-9]*\)/"index": 1\1/' |		\
 		${CRIT_BIN} encode > ${IMAGES_PATH}/tty-info.img.new
@@ -20,7 +16,9 @@ function criu_dump()
 		sed 's|/dev/pts/\([0-9]*\)|/dev/pts/1\1|' |		\
 		${CRIT_BIN} encode > ${IMAGES_PATH}/reg-files.img.new
 	mv ${IMAGES_PATH}/reg-files.img.new ${IMAGES_PATH}/reg-files.img
-	${CRIT_BIN} show ${IMAGES_PATH}/tty-info.img > "${LOGS}/tty-info"
+	${CRIT_BIN} show ${IMAGES_PATH}/tty-info.img > "${LOGS}/tty-info.txt"
+	ls -l "${IMAGES_PATH}" > "${LOGS}/images.txt"
+	${CRIT_BIN} show ${IMAGES_PATH}/cgroup.img > "${LOGS}/cgroup.txt"
 }
 
 function kexec_load()

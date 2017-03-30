@@ -116,7 +116,7 @@ function prepare_env()
 	cat > /etc/init/criu.conf <<-EOF
 		start on runlevel [2345]
 		stop on runlevel [016]
-		exec ${RESTORE_SCRIPT} $(pwd) ${SYSTEMD_FIFO}
+		exec ${RESTORE_SCRIPT} "$(pwd)" "${SYSTEMD_FIFO}" "${LOGS}" "${CRIU_DIR}" "${DEBUG}"
 	EOF
 
 	if [[ ${DEBUG} == "y" ]] ; then

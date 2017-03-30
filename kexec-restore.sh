@@ -1,22 +1,33 @@
 #!/bin/bash
 # $1 - pwd to restore
 # $2 - some systemd fifo to create
+# $3 - logs path
+# $4 - criu dir
+# $5 - debug (y/n)
 
 set -x
 
 IMAGES_PATH=/imgs
-CRIU_BIN="${1}/${CRIU_DIR}/criu/criu"
+HOME_PWD="$1"
+FIFO="$2"
+export LOGS="$3"
+CRIU_DIR="$4"
+DEBUG="$5"
+
+exec &>> "${LOGS}/travis-restore.log"
+
+CRIU_BIN="${HOME_PWD}/${CRIU_DIR}/criu/criu"
 
 function restore_env()
 {
 	TRAVIS_BUILD_ID=`cat /travis_id`
 	export TRAVIS_BUILD_ID
 	DROPBOX_TOKEN=`cat /dropbox`
-	export TRAVIS_BUILD_ID
-	cd "$1"
+	export DROPBOX_TOKEN
+	cd "$HOME_PWD"
 
-	mkfifo "$2"
-	chmod 0600 "$2"
+	mkfifo "$FIFO"
+	chmod 0600 "$FIFO"
 }
 
 function restore_debug()
@@ -31,7 +42,7 @@ function restore_debug()
 
 sleep 15
 restore_env
-restore_debug > "${LOGS}/pre-restore"
+restore_debug > "${LOGS}/pre-restore.log"
 
 dmesg -c > "${LOGS}/dmesg.log"
 
@@ -55,7 +66,3 @@ touch /rebooted
 ./debug-dropbox.sh
 
 wait -n $CRIU_PID
-
-if [[ "${DEBUG}" == "y" ]] ; then
-	./dump_logs.sh
-fi
