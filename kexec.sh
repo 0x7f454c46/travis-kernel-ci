@@ -69,7 +69,6 @@ function prepare_kernel()
 	cd -
 	if [[ ${DEBUG} == "y" ]] ; then
 		pwd
-		ls -l
 		ls -l ${KPATH}/arch/x86/boot/bzImage
 	fi
 }
@@ -92,7 +91,6 @@ function find_process_tree_for_cr()
 		pid=$(awk '{ if ($1=="PPid:") print $2 }' \
 			/proc/${PROCESS_TREE}/status)
 	done
-	PROCESS_TREE=${pid}
 }
 
 function prepare_env()
@@ -170,7 +168,7 @@ debug_preparations 2>&1 > "${LOGS}/prepare.log"
 
 export CRIU_BIN IMAGES_PATH PROCESS_TREE CRIT_BIN
 
-sudo setsid bash -c "sudo setsid ./kexec-dump.sh &"
+setsid bash -c "setsid ./kexec-dump.sh &"
 
 for i in `seq 10`; do
 	echo "Waiting for kexec... kernel is $(uname -a)"

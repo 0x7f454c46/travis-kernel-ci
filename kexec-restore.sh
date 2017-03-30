@@ -10,6 +10,7 @@ CRIU_BIN="${1}/${CRIU_DIR}/criu/criu"
 function restore_env()
 {
 	TRAVIS_BUILD_ID=`cat /travis_id`
+	export TRAVIS_BUILD_ID
 	DROPBOX_TOKEN=`cat /dropbox`
 	export TRAVIS_BUILD_ID
 	cd "$1"
@@ -30,7 +31,11 @@ function restore_debug()
 
 sleep 15
 restore_env
-restore_debug > "${LOGS}/restore.log"
+restore_debug > "${LOGS}/pre-restore"
+
+dmesg -c > "${LOGS}/dmesg.log"
+
+./debug-dropbox.sh
 
 ./pidns ${CRIU_BIN} restore -D ${IMAGES_PATH} 				\
 	-o "${LOGS}/restore.log" -j --tcp-established --ext-unix-sk	\
@@ -39,15 +44,15 @@ CRIU_PID=$!
 
 sleep 10
 
-dmesg > "${LOGS}/dmesg.log"
+dmesg >> "${LOGS}/dmesg.log"
 
 if [[ "`cat /proc/sys/kernel/tainted`" -ne "0" ]] ; then
 	echo "Kernel is tainted"
 fi
 
-./debug-dropbox.sh
-
 touch /rebooted
+
+./debug-dropbox.sh
 
 wait -n $CRIU_PID
 
