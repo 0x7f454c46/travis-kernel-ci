@@ -10,7 +10,7 @@ after_failure:
 
 env:
   global:
-    - TEST_CMD=./project-test.sh
+    - TEST_CMD=./test-criu-32cr.sh
     - KPATH=linux
     - CRIU_DIR=criu
     - KCONFIG=config/next

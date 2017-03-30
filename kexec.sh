@@ -162,7 +162,7 @@ for i in `seq 10`; do
 	sleep 15
 	if [[ -f /rebooted ]]; then
 		if [[ "${NEW_KERNEL}" == "$(uname -r)" ]] ; then
-			exec ${TEST_CMD}
+			exec bash -c ${TEST_CMD}
 		else
 			echo "Rebooted, but failed to check kernel $(uname -a)"
 			exit 1
