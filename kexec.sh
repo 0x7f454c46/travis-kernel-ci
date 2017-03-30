@@ -157,8 +157,6 @@ debug_preparations 2>&1 > "${LOGS}/prepare.log"
 
 ### Kexec
 
-./debug-dropbox.sh
-
 export CRIU_BIN IMAGES_PATH PROCESS_TREE CRIT_BIN
 
 sudo setsid bash -c "sudo setsid ./kexec-dump.sh &"

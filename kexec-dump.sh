@@ -40,6 +40,7 @@ function perform_kexec()
 		if [[ ${DEBUG_NO_KEXEC} == "y" ]] ; then
 			$(grep exec /etc/init/criu.conf)
 		fi
+		./debug-dropbox.sh
 		kexec_load
 		kexec -e
 	} || touch /reboot.failed
