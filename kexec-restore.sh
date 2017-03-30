@@ -10,6 +10,7 @@ CRIU_BIN="${1}/${CRIU_DIR}/criu/criu"
 function restore_env()
 {
 	TRAVIS_BUILD_ID=`cat /travis_id`
+	DROPBOX_TOKEN=`cat /dropbox`
 	export TRAVIS_BUILD_ID
 	cd "$1"
 
@@ -43,6 +44,8 @@ dmesg > "${LOGS}/dmesg.log"
 if [[ "`cat /proc/sys/kernel/tainted`" -ne "0" ]] ; then
 	echo "Kernel is tainted"
 fi
+
+./debug-dropbox.sh
 
 touch /rebooted
 

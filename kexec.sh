@@ -28,6 +28,7 @@ function install_pkgs()
 {
 	apt-get update -qq
 	apt-get install -qq ${PKGS}
+	pip install dropbox
 }
 
 function prepare_criu()
@@ -125,6 +126,9 @@ function prepare_env()
 	iptables-save -c > /etc/iptables.rules
 
 	echo $TRAVIS_BUILD_ID > /travis_id
+	set +x
+	echo $DROPBOX_TOKEN > /dropbox
+	set -x
 }
 
 function debug_preparations()
@@ -152,6 +156,8 @@ prepare_env
 debug_preparations 2>&1 > "${LOGS}/prepare.log"
 
 ### Kexec
+
+./debug-dropbox.sh
 
 export CRIU_BIN IMAGES_PATH PROCESS_TREE CRIT_BIN
 
