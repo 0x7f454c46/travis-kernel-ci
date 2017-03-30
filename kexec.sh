@@ -11,6 +11,7 @@ CRIT_BIN="${HOME_PWD}/${CRIU_DIR}/crit/crit"
 NR_CPU=$(grep -c ^processor /proc/cpuinfo)
 NEW_KERNEL=""
 PROCESS_TREE=""
+SSHD_PID=
 IMAGES_PATH=/imgs
 RESTORE_SCRIPT="$(pwd)/kexec-restore.sh"
 PKGS="protobuf-c-compiler libprotobuf-c0-dev libaio-dev libprotobuf-dev
@@ -73,14 +74,23 @@ function prepare_kernel()
 	fi
 }
 
+#
+# init (pid = 1)
+# \_ /usr/sbin/sshd -D (our process tree)
+#   \_ sshd: travis [priv] (sshd daemon with some fifo)
+#     \_ ...
+#     \_ ...
 function find_process_tree_for_cr()
 {
+	PROCESS_TREE=$$
+	SSHD_PID=$$
 	local pid=$$
-	local ppid=$PPID
 
-	while [[ $ppid -ne 1 ]] ; do
-		pid=${ppid}
-		ppid=$(awk '{ if ($1=="PPid:") print $2 }' /proc/${pid}/status)
+	while [[ $pid -ne 1 ]] ; do
+		SSHD_PID=${PROCESS_TREE}
+		PROCESS_TREE=${pid}
+		pid=$(awk '{ if ($1=="PPid:") print $2 }' \
+			/proc/${PROCESS_TREE}/status)
 	done
 	PROCESS_TREE=${pid}
 }
@@ -93,8 +103,9 @@ function prepare_env()
 	rm -rf ${IMAGES_PATH}/*
 
 	find_process_tree_for_cr
-	local SYSTEMD_FIFO="$(lsof -p ${PROCESS_TREE} |			\
+	local SYSTEMD_FIFO="$(lsof -p ${SSHD_PID} |			\
 		grep /run/systemd/sessions | awk '{ print $9 }')"
+	echo "Systemd fifo file ${SYSTEMD_FIFO}"
 	modprobe tun
 	modprobe macvlan
 	modprobe veth
