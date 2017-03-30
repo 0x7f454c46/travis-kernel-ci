@@ -38,7 +38,7 @@ function prepare_criu()
 
 	cd "${CRIU_DIR}"
 	echo "Applying CRIU patches..."
-	git am ${PATCH_DIR}/*
+	git am ${PATCH_DIR}/criu/*
 
 	echo "Building CRIU..."
 	time make -j$((NR_CPU+1))
