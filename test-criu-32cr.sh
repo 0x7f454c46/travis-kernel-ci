@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "======================================"
+echo "=== Start CRIU tests on linux-next ==="
+echo "======================================"
+
 set -x -e
 
 NR_CPU=$(grep -c ^processor /proc/cpuinfo)
