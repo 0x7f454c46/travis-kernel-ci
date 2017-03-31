@@ -10,16 +10,23 @@ NR_CPU=$(grep -c ^processor /proc/cpuinfo)
 
 set -x -e
 
-dpkg --add-architecture i386
-apt-get update -qq
-apt-get install -qq ${PKGS}
-
+# Building criu-dev's CRIU binary
 cd criu
 make mrproper
 git fetch origin
 
 git checkout criu-dev
 git clean -fdx
+make -j$((NR_CPU+1))
+ccache -s
+
+# Installing 32-bit libraries, it needs to be done after
+# building CRIU as *-dev versions in ubuntu conflicts
+# for :x86_64 and for :i386.
+dpkg --add-architecture i386
+apt-get update -qq
+apt-get install -qq ${PKGS}
+
 make -j$((NR_CPU+1)) COMPAT_TEST=y zdtm
 ccache -s
 
