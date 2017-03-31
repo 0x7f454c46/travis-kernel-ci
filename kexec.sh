@@ -35,7 +35,7 @@ function install_pkgs()
 function prepare_criu()
 {
 	echo "Cloning CRIU..."
-	git clone --depth 1 ${CRIU_GIT} "${CRIU_DIR}"
+	git clone ${CRIU_GIT} "${CRIU_DIR}"
 
 	cd "${CRIU_DIR}"
 	echo "Applying CRIU patches..."
