@@ -33,7 +33,7 @@ ccache -s
 
 ./criu/criu check --extra --all || echo $?
 ./criu/criu check --feature compat_cr
-./test/zdtm.py run -a -p 4 --keep-going || FAILED=1
+./test/zdtm.py run -a -p 4 -x zdtm/static/autofs --keep-going || FAILED=1
 bash ./test/jenkins/criu-fault.sh || FAILED=1
 
 if [[ $FAILED -eq 1 ]] ; then
