@@ -27,7 +27,7 @@ dpkg --add-architecture i386
 apt-get update -qq
 apt-get install -qq ${PKGS}
 
-make -j$((NR_CPU+1)) COMPAT_TEST=y zdtm
+make -j$((NR_CPU+1)) COMPAT_TEST=y -C test/zdtm
 ccache -s
 
 ./criu/criu check --extra --all || echo $?
