@@ -4,11 +4,13 @@ echo "======================================"
 echo "=== Start CRIU tests on linux-next ==="
 echo "======================================"
 
-PKGS="libaio-dev:i386 libcap-dev:i386"
+PKGS="libcap-dev:i386 libaio1:i386 libaio-dev:i386"
 NR_CPU=$(grep -c ^processor /proc/cpuinfo)
 
 set -x -e
 
+dpkg --add-architecture i386
+apt-get update -qq
 apt-get install -qq ${PKGS}
 
 cd criu
