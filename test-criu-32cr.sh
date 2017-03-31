@@ -7,6 +7,7 @@ echo "======================================"
 PKGS="libcap-dev:i386 libaio1:i386 libaio-dev:i386 libnl-3-dev:i386	\
 	libnl-route-3-dev:i386"
 NR_CPU=$(grep -c ^processor /proc/cpuinfo)
+FAILED=0
 
 set -x -e
 
@@ -32,5 +33,10 @@ ccache -s
 
 ./criu/criu check --extra --all || echo $?
 ./criu/criu check --feature compat_cr
-./test/zdtm.py run -a -p 4 --keep-going
-bash ./test/jenkins/criu-fault.sh
+./test/zdtm.py run -a -p 4 --keep-going || FAILED=1
+bash ./test/jenkins/criu-fault.sh || FAILED=1
+
+if [[ $FAILED -eq 1 ]] ; then
+	./dropbox_upload.py test/dump/
+fi
+exit $FAILED
