@@ -2,7 +2,7 @@
 
 for i in ${LOGS}/*
 do
-	./dropbox_upload.py $i
+	./dropbox_upload.py $i "logs"
 	rm $i
 done
 

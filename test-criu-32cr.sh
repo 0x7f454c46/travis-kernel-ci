@@ -8,6 +8,16 @@ PKGS="libcap-dev:i386 libaio1:i386 libaio-dev:i386 libnl-3-dev:i386	\
 	libnl-route-3-dev:i386"
 NR_CPU=$(grep -c ^processor /proc/cpuinfo)
 FAILED=0
+HOME="$(pwd)"
+
+function dropbox_dump_upload()
+{
+	if [[ $FAILED -eq 1 ]] ; then
+		find ./test/dump -type f | while read f ; do
+			${HOME}/dropbox_upload.py "$f" "$(dirname $f)"
+		done
+	fi
+}
 
 set -x -e
 
@@ -34,15 +44,8 @@ ccache -s
 ./criu/criu check --extra --all || echo $?
 ./criu/criu check --feature compat_cr
 ./test/zdtm.py run -a -p 4 -x zdtm/static/autofs --keep-going || FAILED=1
-
-if [[ $FAILED -eq 1 ]] ; then
-	find ./test/dump -type f -exec ../dropbox_upload.py '{}' \;
-fi
-
+dropbox_dump_upload
 bash ./test/jenkins/criu-fault.sh || FAILED=1
-
-if [[ $FAILED -eq 1 ]] ; then
-	find ./test/dump -type f -exec ../dropbox_upload.py '{}' \;
-fi
+dropbox_dump_upload
 
 exit $FAILED

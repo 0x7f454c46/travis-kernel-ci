@@ -19,8 +19,9 @@ client = dropbox.client.DropboxClient(access_token)
 f = open(sys.argv[1])
 
 fname = os.path.basename(sys.argv[1])
+dname = sys.argv[2]
 
-response = client.put_file(os.path.join(prefix, d, n, fname), f)
+response = client.put_file(os.path.join(prefix, d, n, dname, fname), f)
 print 'uploaded: ', response
 
 #print "=====================", fname, "======================"
