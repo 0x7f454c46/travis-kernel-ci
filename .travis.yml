@@ -6,7 +6,7 @@ cache: ccache
 script:
   - sudo ./kexec.sh
 after_failure:
-  - sudo ./dump-logs.sh
+  - sudo ./debug-dropbox.sh
 
 env:
   global:

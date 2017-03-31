@@ -166,7 +166,7 @@ debug_preparations 2>&1 > "${LOGS}/prepare.log"
 
 ### Kexec
 
-export CRIU_BIN IMAGES_PATH PROCESS_TREE CRIT_BIN
+export CRIU_BIN IMAGES_PATH CRIT_BIN SSHD_PID
 
 setsid bash -c "setsid ./kexec-dump.sh &"
 

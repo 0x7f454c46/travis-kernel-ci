@@ -5,7 +5,7 @@ set -x -e
 function criu_dump()
 {
 	${CRIU_BIN} dump -D "${IMAGES_PATH}" -o "${LOGS}/dump.log"	\
-		-t ${PROCESS_TREE} -j --tcp-established --ext-unix-sk	\
+		-t ${SSHD_PID} -j --tcp-established --ext-unix-sk	\
 		-vvvv -l --ghost-limit 10485760
 
 	${CRIT_BIN} show ${IMAGES_PATH}/tty-info.img |			\
