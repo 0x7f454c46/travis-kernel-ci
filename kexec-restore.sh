@@ -21,9 +21,14 @@ CRIU_BIN="${HOME_PWD}/${CRIU_DIR}/criu/criu"
 function restore_env()
 {
 	TRAVIS_BUILD_ID=`cat /travis_id`
-	export TRAVIS_BUILD_ID
+	KNAME=`cat /kname`
+	export TRAVIS_BUILD_ID KNAME
+
+	set +x
 	DROPBOX_TOKEN=`cat /dropbox`
 	export DROPBOX_TOKEN
+	set -x
+
 	cd "$HOME_PWD"
 
 	mkfifo "$FIFO"

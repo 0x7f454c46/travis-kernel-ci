@@ -19,7 +19,7 @@ env:
     - DEBUG_NO_KEXEC=n
     - CMDLINE="root=/dev/sda1 cgroup_enable=memory swapaccount=1 apparmor=0 console=ttyS0 console=ttyS0 debug raid=noautodetect slub_debug=FZP"
   matrix:
-    - NAME=master     KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
-    - NAME=linux-next KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
-    - NAME=akpm       KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git -b akpm"
-    - NAME=tip        KGIT="git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git -b auto-latest"
+    - KNAME=master     KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
+    - KNAME=linux-next KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
+    - KNAME=akpm       KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git -b akpm"
+    - KNAME=tip        KGIT="git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git -b auto-latest"

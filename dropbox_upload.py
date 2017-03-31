@@ -6,6 +6,10 @@ d = os.getenv("TRAVIS_BUILD_ID")
 if not d:
     d = "trash"
 
+n = os.getenv("KNAME")
+if not n:
+    n = "undef"
+
 access_token = os.getenv("DROPBOX_TOKEN")
 
 client = dropbox.client.DropboxClient(access_token)
@@ -14,7 +18,7 @@ f = open(sys.argv[1])
 
 fname = os.path.basename(sys.argv[1])
 
-response = client.put_file(os.path.join(d, fname), f)
+response = client.put_file(os.path.join(d, n, fname), f)
 print 'uploaded: ', response
 
 #print "=====================", fname, "======================"

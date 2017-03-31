@@ -135,6 +135,7 @@ function prepare_env()
 	iptables-save -c > /etc/iptables.rules
 
 	echo $TRAVIS_BUILD_ID > /travis_id
+	echo $KNAME > /kname
 	set +x
 	echo $DROPBOX_TOKEN > /dropbox
 	set -x
