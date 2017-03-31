@@ -36,13 +36,13 @@ ccache -s
 ./test/zdtm.py run -a -p 4 -x zdtm/static/autofs --keep-going || FAILED=1
 
 if [[ $FAILED -eq 1 ]] ; then
-	find ./test/dump -type f -exec ./dropbox_upload.py '{}' \;
+	find ./test/dump -type f -exec ../dropbox_upload.py '{}' \;
 fi
 
 bash ./test/jenkins/criu-fault.sh || FAILED=1
 
 if [[ $FAILED -eq 1 ]] ; then
-	find ./test/dump -type f -exec ./dropbox_upload.py '{}' \;
+	find ./test/dump -type f -exec ../dropbox_upload.py '{}' \;
 fi
 
 exit $FAILED

@@ -2,6 +2,8 @@
 
 import dropbox, sys, os
 
+prefix = "travis-kernel-ci"
+
 d = os.getenv("TRAVIS_BUILD_ID")
 if not d:
     d = "trash"
@@ -18,7 +20,7 @@ f = open(sys.argv[1])
 
 fname = os.path.basename(sys.argv[1])
 
-response = client.put_file(os.path.join(d, n, fname), f)
+response = client.put_file(os.path.join(prefix, d, n, fname), f)
 print 'uploaded: ', response
 
 #print "=====================", fname, "======================"
