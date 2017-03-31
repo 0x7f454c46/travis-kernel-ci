@@ -6,7 +6,7 @@ NR_CPU=$(grep -c ^processor /proc/cpuinfo)
 
 cd criu
 make mrproper
-git fetch origin/criu-dev
+git fetch origin
 
 git checkout criu-dev
 git clean -fdx
