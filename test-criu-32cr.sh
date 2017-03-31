@@ -4,9 +4,12 @@ echo "======================================"
 echo "=== Start CRIU tests on linux-next ==="
 echo "======================================"
 
+PKGS="libaio-dev:i386 libcap-dev:i386"
+NR_CPU=$(grep -c ^processor /proc/cpuinfo)
+
 set -x -e
 
-NR_CPU=$(grep -c ^processor /proc/cpuinfo)
+apt-get install -qq ${PKGS}
 
 cd criu
 make mrproper
