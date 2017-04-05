@@ -17,7 +17,7 @@ env:
     - LOGS=/log
     - DEBUG=y
     - DEBUG_NO_KEXEC=n
-    - CMDLINE="root=/dev/sda1 cgroup_enable=memory swapaccount=1 apparmor=0 console=ttyS0 console=ttyS0 debug raid=noautodetect slub_debug=FZP"
+    - CMDLINE="root=/dev/sda1 cgroup_enable=memory swapaccount=1 apparmor=0 console=ttyS0 debug raid=noautodetect vsyscall=none slub_debug=FZP"
   matrix:
     - KNAME=master     KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
     - KNAME=linux-next KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
