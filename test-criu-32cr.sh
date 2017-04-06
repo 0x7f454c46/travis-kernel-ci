@@ -41,18 +41,15 @@ apt-get install -qq ${PKGS}
 make -j$((NR_CPU+1)) COMPAT_TEST=y -C test/zdtm
 ccache -s
 
+umask 0000
+
 chmod 0777 test/
 chmod 0777 test/zdtm/static
 chmod 0777 test/zdtm/transition
-chmod 0777 test/zdtm/static/deleted_unix_sock
-chmod 0777 test/zdtm/static/del_standalone_un
-chmod 0777 test/zdtm/static/fdt_shared
-chmod 0777 test/zdtm/static/write_read10
 
 ./criu/criu check --extra --all || echo $?
 ./criu/criu check --feature compat_cr
 ./test/zdtm.py run -a -p 4 -x zdtm/static/autofs --keep-going || FAILED=1
-dropbox_dump_upload
 echo 'function prep() { :; }' > ./test/jenkins/criu-lib.sh
 bash ./test/jenkins/criu-fault.sh || FAILED=1
 dropbox_dump_upload
