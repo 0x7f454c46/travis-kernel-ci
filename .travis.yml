@@ -19,7 +19,8 @@ env:
     - DEBUG_NO_KEXEC=n
     - CMDLINE="root=/dev/sda1 cgroup_enable=memory swapaccount=1 apparmor=0 console=ttyS0 debug raid=noautodetect vsyscall=none slub_debug=FZP"
   matrix:
-    - KNAME=master     KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
     - KNAME=linux-next KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git"
     - KNAME=akpm       KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git -b akpm"
     - KNAME=tip        KGIT="git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git -b auto-latest"
+# master is commented-out as 32-bit C/R is not supported in torvalds
+#    - KNAME=master     KGIT="http://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux.git"
